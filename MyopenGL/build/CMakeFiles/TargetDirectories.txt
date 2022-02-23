@@ -1,0 +1,3 @@
+/home/jadezz/graphics/MyopenGL/build/CMakeFiles/edit_cache.dir
+/home/jadezz/graphics/MyopenGL/build/CMakeFiles/rebuild_cache.dir
+/home/jadezz/graphics/MyopenGL/build/CMakeFiles/Demo.dir

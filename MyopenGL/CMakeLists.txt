@@ -1,0 +1,6 @@
+cmake_minimum_required(VERSION 3.21)
+project(Demo)
+set(CMAKE_CXX_STANDARD 11)
+set(SOURCE_FILES helloWindows.cpp)
+add_executable(Demo ${SOURCE_FILES})
+target_link_libraries(Demo glfw GL GLEW m Xrandr Xi X11 Xxf86vm pthread dl Xinerama Xcursor)
