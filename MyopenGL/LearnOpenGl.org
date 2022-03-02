@@ -1,12 +1,69 @@
 #+TITLE: LearnOpenGl
+#+OPTIONS: ^:{}
+* 格式测试
+#+begin_verse
+this is a fucking test
+
+do you know me
+#+end_verse
+
+#+begin_quote
+this is a fucking test
+do you know me
+#+end_quote
+
+The Org homepage[fn:1] now looks a lot better than it used to.
+[fn:1] The link is: https://orgmode.org
+
+
+#+BEGIN_EXAMPLE
+  Some example from a text file.
+  do you know me
+  heiheiheih
+#+END_EXAMPLE
+
+#+BEGIN_SRC emacs-lisp
+  (defun org-xor (a b)
+    "Exclusive or."
+    (if a (not b) b))
+ #+END_SRC
+
 * 你好，三角形
 OpenGL大部分工作是如何把3D坐标转化成适应你屏幕的2D像素。
-3D坐标转变为2D坐标的处理过程由OpenGL的图形渲染管线完成的
-** COMMENT 管线
-可以分为以下两部分
+
+3D坐标转变为2D坐标的处理过程由OpenGL的图形渲染管线(Graphics Pipeline)完成的。
+
+*三个常用单词*
+1. 顶点数组对象：Vertex Array Object , VAO
+2. 顶点缓冲对象：Vertex Buffer Object, VBO
+3. 索引缓冲对象：Element Buffer Object，EBO或Index Buffer Object，IBO
+   
+*管线可以分为以下两部分：*
 1. 3D坐标转换为2D坐标
 2. 2D坐标转变为实际的有颜色的像素
+   
+*注意：* 2D坐标和像素也是不同的，2D坐标精确表示一个点在2D空间中的位置，而2D像素是这个点的近似值，2D像素受到你的屏幕/窗口分辨率的限制。
 
-   #+begin_quote
- 2D坐标和像素也是不同的，2D坐标精确表示一个点在2D空间中的位置，而2D像素是这个点的近似值，2D像素受到你的屏幕/窗口分辨率的限制。
-   #+end_quote
+*着色器*:
+
+    图形渲染管线接受一组3D坐标，然后把它们转变为你屏幕上的有色2D像素输出。图形渲染管线可以被划分为几个阶段，每个阶段将会把前一个阶段的输出作为输入。所有这些阶段都是高度专门化的（它们都有一个特定的函数），并且很容易并行执行。正是由于它们具有并行执行的特性，当今大多数显卡都有成千上万的小处理核心，它们在GPU上为每一个（渲染管线）阶段运行各自的小程序，从而在图形渲染管线中快速处理你的数据。这些小程序叫做着色器(Shader)。
+
+ [[file:LearnOpenGl.org_imgs/20220301_211836_uHO7Bg.png]]   
+
+*一些名词:*
+
+    - 顶点数据（Vertex Data）：一系列数据的集合，包括顶点坐标，纹理坐标，顶点法线和顶点颜色等顶点属性，为了让OpenGL明白顶点数据构成的是什么图元，我们需要在绘制指令中传递相对应的图元信息。常见的图元包括：点(GL_POINTS)、线(GL_LINES)、线条(GL_LINE_STRIP)、三角面(GL_TRIANGLES)。
+    - 位置：代表在一个“空间”中所处地点的这个特殊属性；同时“空间”代表着任何一种坐标系，比如x、y、z三维坐标系，x、y二维坐标系，或者一条直线上的x和y的线性关系，只不过二维坐标系是一个扁扁的平面空间，而一条直线是一个很瘦的长长的空间 
+      
+ *图像渲染管线的基本流程：*
+
+ 1. 顶点着色器：一个单独的顶点作为输入，主要目的是把3D坐标转为另一种3D坐标，也可以对顶点属性进行一些基本处理
+ 2. 图元装配：将顶点着色器输出的所有顶点作为输入，并把所有点装配成指定图元形状，上图是连成三角形，俗称：连线
+ 3. 几何着色器：图元形式的一系列顶点集合作为输入，可以产生新顶点构造出新的（或者其他的）图元来生成其他形状，上图是构造出了新的三角形
+ 4. 光栅化阶段：把图元映射为最终屏幕上相应的像素，生成供片段着色器使用的片段，在下一阶段进行前，会进行裁切，裁切会丢弃超出我们看到的视图之外的所有像素，用来提升效率
+ 5. 片段着色器：计算一个像素的最终颜色，颜色会被很多因素影响（比如：光照，阴影，光的颜色等等）俗称：上色
+ 6. Alpha测试和混合(Blending)：检测片段的对应深度（和模板（Stencil）值，用它们来判断这个像素是其他物体的前面还是后面，决定是否应该丢弃，也会检查alpha值（该值定义了一个物体的透明度）并对物体进行混合（Blending），因此片段着色器中计算出来了一个像素的颜色，最后也可能因为各种原因颜色可能完全不同。
+** 顶点输入
+顾名思义，就是给
+
+

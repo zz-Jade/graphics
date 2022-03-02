@@ -1,1 +1,0 @@
-/usr/bin/c++ CMakeFiles/Demo.dir/helloWindows.cpp.o -o Demo  -lglfw -lGL -lGLEW -lm -lXrandr -lXi -lX11 -lXxf86vm -lpthread -ldl -lXinerama -lXcursor 
